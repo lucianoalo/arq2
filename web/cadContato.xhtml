@@ -1,0 +1,67 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+    <h:head>
+        <title>Cadastro de Contatos</title>
+    </h:head>
+    <h:body>
+        <h:form id="formContato">
+            <p:messages id="msgs"/>
+            <p:panelGrid columns="2" style="border:0">
+                <p:column>
+                    <p:outputLabel for="nome" value="Nome"/><br/>
+                    <p:inputText id="nome" value="#{contatoBean.contato.nome}" size="20" />
+                </p:column>
+                <p:column>
+                    <p:outputLabel for="sobreNome" value="Sobrenome"/><br/>
+                    <p:inputText id="sobreNome" value="#{contatoBean.contato.sobreNome}" size="20" />
+                </p:column>
+                <p:column>
+                    <p:outputLabel for="fone" value="Fone"/><br/>
+                    <p:inputMask id="fone" value="#{contatoBean.contato.fone}" size="20" required="true" requiredMessage="Telefone obrigatório" mask="(99) 9999-9999" />
+                </p:column>
+                <p:column>
+                    <p:outputLabel for="email" value="Email"/><br/>
+                    <p:inputText id="email" value="#{contatoBean.contato.email}" size="20" />
+                </p:column>
+                <p:column>
+                    <p:outputLabel for="autoComplete" value="AutoComplete"/><br/>
+                    <p:autoComplete id="autoComplete"
+                                    value="#{contatoBean.contato}"
+                                    completeMethod="#{contatoBean.autoComplete}"
+                                    minQueryLength="4"/>
+                </p:column>
+                <p:column>
+                    <p:commandButton action="#{contatoBean.gravar}" value="Gravar" update=":formContato,:formListaContato"/>
+                </p:column>
+            </p:panelGrid>
+        </h:form>
+        <h:form id="formListaContato">
+            <p:panelGrid columns="1">
+                <p:column>
+                    <p:dataTable id="listaContatos" value="#{contatoBean.contatos}" var="c"
+                                 emptyMessage="Nenhum contato cadastrado"
+                                 rows="4" paginator="true" paginatorPosition="bottom">
+                        <p:column filterBy="#{c.nome} #{c.sobreNome}" filterMatchMode="contains">
+                            <f:facet name="header">Nome</f:facet>
+                            #{c.nome} #{c.sobreNome}
+                        </p:column>
+                        <p:column filterBy="#{c.fone}">
+                            <f:facet name="header">Telefone</f:facet>
+                            #{c.fone}
+                        </p:column>
+                        <p:column filterBy="#{c.email}" filterMatchMode="exact">
+                            <f:facet name="header">E-mail</f:facet>
+                            #{c.email}
+                        </p:column>
+                        <f:facet name="footer">Total de contatos: #{contatoBean.contatos.size()}</f:facet>
+                    </p:dataTable>
+                </p:column>
+            </p:panelGrid>
+        </h:form>
+    </h:body>
+</html>
+

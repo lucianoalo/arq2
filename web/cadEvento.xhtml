@@ -1,0 +1,82 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+    <h:head>
+        <title>Cadastro de Eventos</title>
+    </h:head>
+    <h:body>
+        <h:form id="formEvento">
+            <p:messages id="msgs"/>
+            <p:panel id="eventoPainel">
+                <p:panelGrid columns="1">
+                <p:column>
+                    <p:outputLabel for="oquee" value="Evento"/><br/>
+                    <p:inputText id="oquee" value="#{eventoBean.evento.OQueE}" size="50" 
+                                 required="true" requiredMessage="Informe o evento"/>
+                </p:column>
+                <p:column>
+                    <p:outputLabel for="dthrinicio" value="Dt/Hr Inicio"/><br/>
+                    <p:calendar id="dthrinicio" value="#{eventoBean.evento.dthrInicio}"/>
+                </p:column>
+                <p:column>
+                    <p:outputLabel for="dthrfim" value="Dt/Hr Fim"/><br/>
+                    <p:calendar id="dthrfim" value="#{eventoBean.evento.dthrFim}"/>
+                </p:column>
+                <p:column>
+                    <p:outputLabel for="onde" value="Onde"/><br/>
+                    <p:inputTextarea id="onde" value="#{eventoBean.evento.onde}" rows="2" cols="50" />
+                </p:column>
+                <p:column>
+                    <p:outputLabel for="detalhes" value="Detalhes"/><br/>
+                    <p:inputTextarea id="detalhes" value="#{eventoBean.evento.detalhes}" rows="2" cols="50" />
+                </p:column>
+                <p:column>
+                    <p:commandButton value="Gravar" onsuccess="confirmacao.show()" action="#{eventoBean.gravar}" update="msgs,eventoPainel,:formListaEvento:listaevento"/>
+                </p:column>    
+                </p:panelGrid>
+            </p:panel>
+        </h:form>
+        <h:form id="formListaEvento">
+            <p:panelGrid columns="1">
+                <p:column>
+                    <p:dataTable id="listaevento" value="#{eventoBean.eventos}" var="c"
+                                 emptyMessage="Nenhum evento cadastrado"
+                                 rows="4" paginator="true" paginatorPosition="bottom">
+                        <p:column headerText="O que é?">
+                            #{c.OQueE}
+                        </p:column>                      
+                        <p:column headerText="Dt/Hr de inicio">
+                            <h:outputText value="#{c.dthrInicio}">
+                                <f:convertDateTime pattern="dd/MM/yyyy" />
+                            </h:outputText>
+                        </p:column>
+                        <p:column headerText="Dt/Hr de fim">
+                            <h:outputText value="#{c.dthrFim}">
+                                <f:convertDateTime dateStyle="short" />
+                            </h:outputText>
+                        </p:column>
+                        <p:column headerText="Onde?">
+                            #{c.onde}
+                        </p:column>
+                        <p:column headerText="Detalhes">
+                            #{c.detalhes}
+                        </p:column>
+                    </p:dataTable>
+                </p:column>
+            </p:panelGrid>
+        </h:form>
+        
+        <h:form id="formConfirmacao">
+            <p:confirmDialog id="modalConfirmacao" widgetVar="confirmacao" 
+                             header="Evento cadastrado com sucesso"
+                             message="Desejar adicionar os participantes?">
+                <p:commandButton id="btnOK" value="Sim" action="#{contatoBean.defineContatos}"/>
+                <p:commandButton id="btnCancel" value="Não" onclick="confirmacao.hide()" />
+            </p:confirmDialog>>
+        </h:form>
+    </h:body>
+</html>
+
